@@ -63,6 +63,27 @@ services:
     profiles:
       - cache
 
+  processor:
+    build:
+      context: .
+      dockerfile: /candidate-solution/Shuffle.DataProcessor/Dockerfile
+    image: processor/latest
+    networks:
+      - coding-test-network 
+  shuffle:
+    build:
+      context: .
+      dockerfile: /candidate-solution/Shuffle.Api/Dockerfile
+    ports:
+      - 8080:8080
+      - 8080:8081
+    depends_on:
+      processor:
+        condition: service_healthy
+    image: shuffle/latest
+    networks:
+      - coding-test-network 
+
 networks:
   coding-test-network:
     driver: bridge

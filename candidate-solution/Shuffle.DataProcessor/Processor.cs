@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 
 namespace Shuffle.DataProcessor
 {
@@ -22,12 +16,10 @@ namespace Shuffle.DataProcessor
         {
             var accounts = await _fetcher.GetAccounts();
 
-            foreach (var account in accounts.Take(1))
+            foreach (var account in accounts)
             {
                 var user = new User { Id = account };
                 _users[account] = user;
-                var userPendingTransactions = new List<Transaction>();
-                var userBookedTransactions = new List<Transaction>();
                 var userTransactions = new List<Transaction>();
 
                 var transactions = await _fetcher.GetAllTransactions(account);
@@ -38,13 +30,11 @@ namespace Shuffle.DataProcessor
                     foreach (var booked in transaction.Payload.Booked)
                     {
                         booked.TransactionType = TransactionType.Booked;
-                        //userBookedTransactions.Add(booked);
                         userTransactions.Add(booked);
                     }
 
                     foreach (var pending in transaction.Payload.Pending)
                     {
-                        //userPendingTransactions.Add(pending);
                         pending.TransactionType = TransactionType.Pending;
                         userTransactions.Add(pending);
                     }
@@ -62,7 +52,6 @@ namespace Shuffle.DataProcessor
                 var transactions = userTransaction.Value;
 
                 var deduplicated = transactions.OrderByDescending(t => t.TransactionType).DistinctBy(t => new { t.BookingDate, t.TransactionAmount.Amount, t.RemittanceInformationUnstructured });
-                //var transaction2 = transactions.OrderByDescending(t => t.TransactionType).GroupBy(t => new { t.BookingDate, t.TransactionAmount.Amount, t.RemittanceInformationUnstructured });
                 var userTransactions = new List<ProcessedTransaction>();
 
                 ProcessedTransaction lastTransaction = null;
@@ -104,7 +93,6 @@ namespace Shuffle.DataProcessor
         }
     }
 }
-
 
 public class User
 {

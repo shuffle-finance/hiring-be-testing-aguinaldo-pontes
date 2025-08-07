@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace Shuffle.DataProcessor
 {
@@ -44,7 +39,6 @@ namespace Shuffle.DataProcessor
         public string BookingDate { get; set; }
         public string BookingDateTime { get; set; }
         public TransactionAmount? TransactionAmount { get; set; }
-        //public CurrencyExchange? CurrencyExchange { get; set; }
         public string CreditorName { get; set; }
         public string RemittanceInformationUnstructured { get; set; }
         public string ProprietaryBankTransactionCode { get; set; }
@@ -58,7 +52,6 @@ namespace Shuffle.DataProcessor
 
     public record TransactionAmount(decimal Amount, string Currency);
     public record InstructedAmount(decimal Amount, string Currency);
-    public record CurrencyExchange(InstructedAmount InstructedAmount, string SourceCurrency, decimal ExchangeRage);
     public record PaylodMetadata(Guid AccountId, Guid RequisitingId, string CreatedAt, Guid TraceId);
     public enum TransactionType
     {
