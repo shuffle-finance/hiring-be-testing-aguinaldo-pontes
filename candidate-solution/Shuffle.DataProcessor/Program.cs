@@ -4,4 +4,8 @@ var fetcher = new TransactionFetcher();
 
 var accounts = await fetcher.GetAccounts();
 
-Console.WriteLine(accounts.Count);
+foreach (var account in accounts)
+{
+    var transactions = await fetcher.GetTransactions(account);
+    Console.WriteLine(transactions.Transactions);
+}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Shuffle.DataProcessor
@@ -16,12 +17,23 @@ namespace Shuffle.DataProcessor
         public List<Guid> Accounts { get; set; }
     }
 
-    public class TransactionResponse 
+    public class TransactionResponse
+    {
+        [JsonPropertyName("account_id")]
+        public Guid Accountid { get; set; }
+        public Pagination Pagination { get; set; }
+        public DateTime Timestamp { get; set; }
+        public  List<Transactions> Transactions { get; set; }
+    }
+
+    public class Transactions 
     { 
         public PaylodMetadata Metadata { get; set; }
 
         public Payload Payload { get; set; }
     }
+
+    public record Pagination([property: JsonPropertyName("has_next")]bool HasNext, [property: JsonPropertyName("has_prev")] bool HasPrev, int Page, int PerPage, [property: JsonPropertyName("total_count")] int TotalCount, [property: JsonPropertyName("total_pages")] int TotalPages);
 
     public record Payload(List<Transaction> Pending, List<Transaction> Booked);
 

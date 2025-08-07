@@ -17,9 +17,9 @@ namespace Shuffle.DataProcessor
             return accounts.Accounts;
         }
 
-        public async Task<TransactionResponse> GetTransactions(Guid accountId)
+        public async Task<TransactionResponse> GetTransactions(Guid accountId, int limit = 50, int offset = 0)
         {
-            var payload = await _transactionsClient.GetFromJsonAsync<TransactionResponse>($"/accounts/{accountId}/transactions");
+            var payload = await _transactionsClient.GetFromJsonAsync<TransactionResponse>($"/accounts/{accountId}/transactions?limit={limit}&offset={offset}");
 
 
             return payload;
