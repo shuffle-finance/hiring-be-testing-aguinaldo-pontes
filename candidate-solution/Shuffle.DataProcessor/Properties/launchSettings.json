@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Shuffle.DataProcessor": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
