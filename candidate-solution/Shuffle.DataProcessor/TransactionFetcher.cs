@@ -17,12 +17,31 @@ namespace Shuffle.DataProcessor
             return accounts.Accounts;
         }
 
-        public async Task<TransactionResponse> GetTransactions(Guid accountId, int limit = 50, int offset = 0)
+        public async Task<TransactionResponse> GetTransactions(Guid accountId, int page = 1, int perPage = 100)
         {
-            var payload = await _transactionsClient.GetFromJsonAsync<TransactionResponse>($"/accounts/{accountId}/transactions?limit={limit}&offset={offset}");
+            var payload = await _transactionsClient.GetFromJsonAsync<TransactionResponse>($"/accounts/{accountId}/transactions?page={page}&per_page={perPage}");
 
 
             return payload;
+        }
+
+
+        public async Task<List<Transactions>> GetAllTransactions(Guid accountId)
+        {
+            var response = new List<Transactions>();
+            int page = 1;
+            do
+            {
+                var payload = await GetTransactions(accountId, page: page++);
+
+                response.AddRange(payload.Transactions);
+
+                if (!payload.Pagination.HasNext)
+                    break;
+            } while (true);
+
+
+            return response;
         }
     }
 

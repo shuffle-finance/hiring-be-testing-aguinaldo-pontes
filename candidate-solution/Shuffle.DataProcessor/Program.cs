@@ -1,11 +1,15 @@
 ﻿using Shuffle.DataProcessor;
 
-var fetcher = new TransactionFetcher();
+//var fetcher = new TransactionFetcher();
 
-var accounts = await fetcher.GetAccounts();
+//var accounts = await fetcher.GetAccounts();
 
-foreach (var account in accounts)
-{
-    var transactions = await fetcher.GetTransactions(account);
-    Console.WriteLine(transactions.Transactions);
-}
+//foreach (var account in accounts)
+//{
+//    var transactions = await fetcher.GetTransactions(account);
+//    Console.WriteLine(transactions.Transactions);
+//}
+
+var processor = new Processor();
+
+await processor.Process();

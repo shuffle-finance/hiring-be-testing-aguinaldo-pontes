@@ -22,7 +22,7 @@ namespace Shuffle.DataProcessor
         [JsonPropertyName("account_id")]
         public Guid Accountid { get; set; }
         public Pagination Pagination { get; set; }
-        public DateTime Timestamp { get; set; }
+        public string Timestamp { get; set; }
         public  List<Transactions> Transactions { get; set; }
     }
 
@@ -42,19 +42,27 @@ namespace Shuffle.DataProcessor
     {
         public string TransactionId { get; set; }
         public string BookingDate { get; set; }
-        public DateTime BookingDateTime { get; set; }
+        public string BookingDateTime { get; set; }
         public TransactionAmount? TransactionAmount { get; set; }
-        public CurrencyExchange? CurrencyExchange { get; set; }
+        //public CurrencyExchange? CurrencyExchange { get; set; }
         public string CreditorName { get; set; }
         public string RemittanceInformationUnstructured { get; set; }
         public string ProprietaryBankTransactionCode { get; set; }
         public string MerchantCategoryCode { get; set; }
         public string InternalTransactionId { get; set; }
+        [JsonIgnore]
+        public TransactionType TransactionType { get; set; }
+
     }
 
 
     public record TransactionAmount(decimal Amount, string Currency);
     public record InstructedAmount(decimal Amount, string Currency);
     public record CurrencyExchange(InstructedAmount InstructedAmount, string SourceCurrency, decimal ExchangeRage);
-    public record PaylodMetadata(Guid AccountId, Guid RequisitingId, DateTime CreatedAt, Guid TraceId);
+    public record PaylodMetadata(Guid AccountId, Guid RequisitingId, string CreatedAt, Guid TraceId);
+    public enum TransactionType
+    {
+        Pending = 1,
+        Booked = 2
+    }
 }
